@@ -44,5 +44,7 @@ def preprocess_data(json_file: dict):
     a = pd.DataFrame(df.sum()).reset_index()
     a = a.drop(0, axis=0)
     df = df.drop(list(a[a[0] == 1]['index']), axis=1)
+    
+    df = pd.concat([df.drop('SourceCountry',axis=1),pd.get_dummies(df['SourceCountry']).drop(['ZA'],axis=1)],axis=1)
 
     return df
