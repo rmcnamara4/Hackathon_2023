@@ -17,8 +17,6 @@ def preprocess_data(json_file: dict):
              'Qualification': result['primarysource']['qualification'] if 'qualification' in result[
                  'primarysource'].keys() else None,
              'SetAge': result['patient']['patientonsetage'] if 'patientonsetage' in result['patient'].keys() else None,
-             'AgeUnit': result['patient']['patientonsetageunit'] if 'patientonsetageunit' in result[
-                 'patient'].keys() else None,
              'Sex': result['patient']['patientsex'] if 'patientsex' in result['patient'].keys() else None,
              'Serious': result['serious']
              })
@@ -31,7 +29,9 @@ def preprocess_data(json_file: dict):
             else:
                 rows[-1]['DrugChar' + str(drug['drugcharacterization'])] = 1
             if 'drugstructuredosagenumb' in drug.keys():
-                rows[-1][drug['activesubstance']['activesubstancename'] + 'Dosage'] = drug['drugstructuredosagenumb'],
+                rows[-1][drug['activesubstance']['activesubstancename'] + 'Dosage'] = drug['drugstructuredosagenumb']
+            else:
+                rows[-1][drug['activesubstance']['activesubstancename'] + 'Dosage'] = 'Missing'
             if 'drugstartdate' in drug.keys():
                 if 'MostRecentDrug' in rows[-1].keys():
                     rows[-1]['MostRecentDrug'] = min(rows[-1]['MostRecentDrug'],
