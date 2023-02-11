@@ -38,4 +38,11 @@ def preprocess_data(json_file: dict):
                                                      date_difference(result['receivedate'], drug['drugstartdate']))
                 else:
                     rows[-1]['MostRecentDrug'] = date_difference(result['receivedate'], drug['drugstartdate'])
-    return rows
+    df = pd.DataFrame(rows)
+
+    #removing the drugs that only occur once
+    a = pd.DataFrame(df.sum()).reset_index()
+    a = a.drop(0, axis=0)
+    df = df.drop(list(a[a[0] == 1]['index']), axis=1)
+
+    return df
